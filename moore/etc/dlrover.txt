@@ -1,0 +1,39 @@
+
+kubectl -n dlrover apply -k go/elasticjob/config/manifests/bases
+kubectl apply -f go/elasticjob/config/crd/bases
+kubectl -n dlrover apply -f go/elasticjob/config/manifests/bases/default-role.yaml
+
+cd go/elasticjob && make deploy IMG=easydl/elasticjob-controller:master
+
+
+https://blog.csdn.net/SchopenhauerZhang/article/details/135633547
+https://www.chenshaowen.com/blog/use-dlrover-to-manage-training-job.html
+https://www.chenshaowen.com/blog/kubernetes-dlrover-workflow-analysis.html
+https://zhuanlan.zhihu.com/p/641024670
+
+
+kubectl apply -f go/elasticjob/config/crd/bases
+
+# 把 CRD 的权限给到 DLRover Master Manager
+kubectl -n dlrover apply -f go/elasticjob/config/manifests/bases/default-role.yaml 
+
+cd go/elasticjob
+make deploy IMG=easydl/elasticjob-controller:master
+
+# 检查
+kubectl -n dlrover get crd
+kubectl -n dlrover get deployment
+
+# full k8s
+# https://github.com/intelligent-machine-learning/dlrover/blob/master/docs/deployment/k8s.md
+# https://github.com/intelligent-machine-learning/dlrover/blob/master/docs/deployment/controller.md
+
+cd dlrover/go/brain/manifests/k8s
+kubectl apply -f mysql-pv.yaml
+kubectl apply -f mysql.yaml
+
+# wait for my-sql pod creating
+
+kubectl exec -it <mysql-pod-name> --namespace dlrover -- bash
+cd dlrover
+mysql -uroot -proot < dlrover-tables.sql

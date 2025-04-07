@@ -1,0 +1,58 @@
+
+# kubectl #
+
+curl -LO \
+  https://storage.googleapis.com/kubernetes-release/release/$( \
+    curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt \
+  )/bin/linux/amd64/kubectl
+
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+
+
+# kubectl #
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"`
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+
+# mini-kube #
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+minikube start --driver=docker
+
+
+# go #
+
+tar -C /usr/local -xzf go1.24.1.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+export GOPROXY=https://goproxy.cn,direct
+
+
+# install go #
+
+rm -rf /usr/local/go
+tar -C /usr/local -xzf go1.24.1.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+export GOPROXY=https://goproxy.cn,direct
+export GOSUMDB=sum.golang.google.cn  # 校验库的国内镜像
+
+
+# cn #
+
+docker pull registry.cn-hangzhou.aliyuncs.com/google_containers/storage-provisioner:v5
+
+docker tag \
+  registry.cn-hangzhou.aliyuncs.com/google_containers/storage-provisioner:v5 \
+  gcr.io/k8s-minikube/storage-provisioner:v5
+
+minikube start \
+  --driver=docker \
+  --image-mirror-country='cn' \
+  --image-repository='registry.cn-hangzhou.aliyuncs.com/google_containers'
+
+minikube start \
+  --driver=docker \
+  --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers \
+  --base-image="gcr.io/k8s-minikube/kicbase:v0.0.46"

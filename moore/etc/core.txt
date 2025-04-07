@@ -1,0 +1,3 @@
+
+
+ls /var/lib/apport/coredump/

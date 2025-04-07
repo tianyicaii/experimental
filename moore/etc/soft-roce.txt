@@ -1,0 +1,15 @@
+
+sudo apt install -y \
+  rdma-core \
+  rdmacm-utils \
+  perftest \
+  librdmacm1 \
+  librdmacm-dev \
+  libibverbs1 \
+  libibverbs-dev \
+  ibverbs-utils \
+
+sudo modprobe rdma_rxe
+sudo modprobe ib_core
+sudo rdma link add rxe0 type rxe netdev eth0
+ibv_devices
