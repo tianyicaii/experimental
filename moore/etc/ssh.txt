@@ -1,9 +1,0 @@
-
-Host *
-  ServerAliveInterval 30
-  ServerAliveCountMax 10
-  GSSAPIAuthentication yes
-  GSSAPIDelegateCredentials no
-  StrictHostKeyChecking no
-  HostKeyAlgorithms +ssh-rsa
-  PubkeyAcceptedKeyTypes +ssh-rsa
